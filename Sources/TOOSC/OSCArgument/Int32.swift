@@ -1,0 +1,25 @@
+//
+//  File.swift
+//  
+//
+//  Created by Toby O'Connell on 09/12/2020.
+//
+
+import Foundation
+
+extension Int32: OSCArgument {
+    static let typeTag: Character = "i"
+    
+    var oscData: Data {
+        withUnsafeBytes(of: bigEndian) { Data($0) }
+    }
+    
+    init?(oscData: Data, index: inout Int) {
+        let size = MemoryLayout<Self>.size
+        guard oscData.count >= size else { return nil }
+        let searchData = oscData[index ..< index + size]
+        
+        self.init(bigEndian: searchData.withUnsafeBytes { $0.load(as: Int32.self) })
+        index += size
+    }
+}
