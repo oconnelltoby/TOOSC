@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct OSCMessage: Equatable {
-    static func == (lhs: OSCMessage, rhs: OSCMessage) -> Bool {
+public struct OSCMessage: Equatable {
+    public static func == (lhs: OSCMessage, rhs: OSCMessage) -> Bool {
         lhs.oscData == rhs.oscData
     }
     
     var address: String
     var arguments: [OSCArgument]
     
-    init(address: String, arguments: [OSCArgument]) {
+    public init(address: String, arguments: [OSCArgument]) {
         self.address = address
         self.arguments = arguments
     }
     
-    var oscData: Data {
+    public var oscData: Data {
         var typeTags = ","
         var argumentData = Data()
 
@@ -32,7 +32,7 @@ struct OSCMessage: Equatable {
         return address.oscData + typeTags.oscData + argumentData
     }
 
-    init?(oscData: Data, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
+    public init?(oscData: Data, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
         guard oscData.starts(with: "/".utf8) else { return nil }
 
         var index = 0

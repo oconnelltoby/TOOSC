@@ -8,13 +8,13 @@
 import Foundation
 
 extension Int32: OSCArgument {
-    static let typeTag: Character = "i"
+    public static let typeTag: Character = "i"
     
-    var oscData: Data {
+    public var oscData: Data {
         withUnsafeBytes(of: bigEndian) { Data($0) }
     }
     
-    init?(oscData: Data, index: inout Int) {
+    public init?(oscData: Data, index: inout Int) {
         let size = MemoryLayout<Self>.size
         guard oscData.count >= size else { return nil }
         let searchData = oscData[index ..< index + size]

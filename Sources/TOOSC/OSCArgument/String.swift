@@ -8,13 +8,13 @@
 import Foundation
 
 extension String: OSCArgument {
-    static let typeTag: Character = "s"
+    public static let typeTag: Character = "s"
     
-    var oscData: Data {
+    public var oscData: Data {
         nullTerminatedBytes.bytePadded(multiple: 4)
     }
     
-    init?(oscData: Data, index: inout Int) {
+    public init?(oscData: Data, index: inout Int) {
         let searchData = oscData[index ..< oscData.endIndex]
         let stringData = searchData.prefix { $0 != 0 }
         

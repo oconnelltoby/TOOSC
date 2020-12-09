@@ -8,13 +8,13 @@
 import Foundation
 
 extension Float32: OSCArgument {
-    static let typeTag: Character = "f"
+    public static let typeTag: Character = "f"
     
-    var oscData: Data {
+    public var oscData: Data {
         withUnsafeBytes(of: bitPattern.bigEndian) { Data($0) }
     }
     
-    init?(oscData: Data, index: inout Int) {
+    public init?(oscData: Data, index: inout Int) {
         let size = MemoryLayout<Self>.size
         guard oscData.count >= size else { return nil }
         let searchData = oscData[index ..< index + size]
