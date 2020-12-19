@@ -33,9 +33,13 @@ public struct OSCMessage: Equatable {
     }
 
     public init?(oscData: Data, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
-        guard oscData.starts(with: "/".utf8) else { return nil }
-
         var index = 0
+        self.init(oscData: oscData, index: &index, argumentBuilders: argumentBuilders)
+    }
+
+    public init?(oscData: Data, index: inout Int, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
+        let oscData = oscData[index ..< oscData.count]
+        guard oscData.starts(with: "/".utf8) else { return nil }
 
         guard let address = String(oscData: oscData, index: &index) else { return nil }
         self.address = address
