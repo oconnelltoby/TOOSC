@@ -11,7 +11,7 @@ extension Data: OSCArgument {
     public static let typeTag: Character = "b"
     
     public var oscData: Data {
-        let length = UInt32(count).bigEndian
+        let length = Int32(count).bigEndian
         let lengthData = Swift.withUnsafeBytes(of: length) { Data($0) }
         return (lengthData + self).bytePadded(multiple: 4)
     }
