@@ -8,7 +8,7 @@
 import Foundation
 
 extension Array where Element == OSCArgument.Type {
-    public static let `default`: Self = [Float32.self, Int32.self, Data.self, String.self]
+    public static let `default`: Self = [Float32.self, Int32.self, Data.self, String.self, TimeTag.self]
 }
 
 extension Dictionary where Key == Character, Value == (_ oscData: Data, _ index: inout Int) -> OSCArgument? {
