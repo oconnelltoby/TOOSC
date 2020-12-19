@@ -7,11 +7,7 @@
 
 import Foundation
 
-public struct OSCMessage: Equatable {
-    public static func == (lhs: OSCMessage, rhs: OSCMessage) -> Bool {
-        lhs.oscData == rhs.oscData
-    }
-    
+public struct OSCMessage {
     var address: String
     var arguments: [OSCArgument]
     
