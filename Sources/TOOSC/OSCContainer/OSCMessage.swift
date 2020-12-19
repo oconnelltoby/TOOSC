@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct OSCMessage {
+public struct OSCMessage: OSCContainer {
+    static var indentifier: String = "/"
+    
     var address: String
     var arguments: [OSCArgument]
     
@@ -35,7 +37,7 @@ public struct OSCMessage {
 
     public init?(oscData: Data, index: inout Int, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
         let oscData = oscData[index ..< oscData.count]
-        guard oscData.starts(with: "/".utf8) else { return nil }
+        guard oscData.starts(with: Self.indentifier.utf8) else { return nil }
 
         guard let address = String(oscData: oscData, index: &index) else { return nil }
         self.address = address
