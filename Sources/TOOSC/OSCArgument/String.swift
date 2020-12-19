@@ -15,8 +15,8 @@ extension String: OSCArgument {
     }
     
     public init?(oscData: Data, index: inout Int) {
-        let searchData = oscData[index ..< oscData.endIndex]
-        let stringData = searchData.prefix { $0 != 0 }
+        let oscData = oscData[index ..< oscData.endIndex]
+        let stringData = oscData.prefix { $0 != 0 }
         
         self.init(data: stringData, encoding: .utf8)
         let nullTerminatorSize = 1

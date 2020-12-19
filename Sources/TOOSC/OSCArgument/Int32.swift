@@ -17,9 +17,9 @@ extension Int32: OSCArgument {
     public init?(oscData: Data, index: inout Int) {
         let size = MemoryLayout<Self>.size
         guard oscData.count >= size else { return nil }
-        let searchData = oscData[index ..< index + size]
+        let oscData = oscData[index ..< index + size]
         
-        self.init(bigEndian: searchData.withUnsafeBytes { $0.load(as: Int32.self) })
+        self.init(bigEndian: oscData.withUnsafeBytes { $0.load(as: Int32.self) })
         index += size
     }
 }
