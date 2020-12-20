@@ -15,8 +15,8 @@ extension Data: OSCArgument {
     
     public init?(oscData: Data, index: inout Int) {
         guard let size = Int32(oscData: oscData, index: &index) else { return nil }
+        guard oscData.count >= Int(size) + MemoryLayout.size(ofValue: size) else { return nil }
         let oscData = oscData[index ..< oscData.endIndex]
-        guard oscData.count >= size else { return nil }
         self = oscData[index ..< index + Int(size)]
         index += Int(size).nextMultiple(of: 4)
     }

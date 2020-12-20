@@ -27,8 +27,8 @@ public struct TimeTag: OSCArgument {
     
     public init?(oscData: Data, index: inout Int) {
         let size = MemoryLayout<UInt64>.size
-        let oscData = oscData.subdata(in: index ..< index + size)
         guard oscData.count >= size else { return nil }
+        let oscData = oscData.subdata(in: index ..< index + size)
         
         let ntpSeconds = UInt64(bigEndian: oscData.withUnsafeBytes { $0.load(as: UInt64.self) })
         self.init(ntpSeconds: ntpSeconds)
