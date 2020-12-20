@@ -5,6 +5,15 @@
 import Foundation
 
 public struct OSCMessage: OSCContainer {
+    enum ParsingError: Error {
+        case invalidIdentifier
+        case cannotParseTypeTags(error: Error)
+        case invalidTypeTagIdentifier
+        case invalidAddress(error: Error)
+        case typeTagError(error: Error)
+        case argumentBuildingError(error: Error)
+    }
+    
     static var indentifier: String = "/"
     
     var address: String
@@ -27,23 +36,44 @@ public struct OSCMessage: OSCContainer {
         return address.oscData + typeTags.oscData + argumentData
     }
 
-    public init?(oscData: Data, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
+    public init(
+        oscData: Data,
+        argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) throws -> OSCArgument]
+    ) throws {
         var index = 0
-        self.init(oscData: oscData, index: &index, argumentBuilders: argumentBuilders)
+        try self.init(oscData: oscData, index: &index, argumentBuilders: argumentBuilders)
     }
 
-    public init?(oscData: Data, index: inout Int, argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]) {
+    public init(
+        oscData: Data,
+        index: inout Int,
+        argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) throws -> OSCArgument]
+    ) throws {
         let oscData = oscData[index ..< oscData.count]
-        guard oscData.starts(with: Self.indentifier.utf8) else { return nil }
+        guard oscData.starts(with: Self.indentifier.utf8) else {
+            throw ParsingError.invalidIdentifier
+        }
 
-        guard let address = String(oscData: oscData, index: &index) else { return nil }
-        self.address = address
+        do { address = try String(oscData: oscData, index: &index) }
+        catch { throw ParsingError.invalidAddress(error: error) }
 
-        guard let typeTags = String(oscData: oscData, index: &index) else { return nil }
-        guard typeTags.starts(with: ",") else { return nil }
-
-        arguments = typeTags.dropFirst().compactMap { typeTag in
-            argumentBuilders[typeTag]?(oscData, &index)
+        let typeTags: String
+        do {
+            typeTags = try String(oscData: oscData, index: &index)
+        } catch {
+            throw ParsingError.cannotParseTypeTags(error: error)
+        }
+        
+        guard typeTags.starts(with: ",") else {
+            throw ParsingError.invalidTypeTagIdentifier
+        }
+        
+        do {
+            arguments = try typeTags.dropFirst().compactMap { typeTag in
+                try argumentBuilders[typeTag]?(oscData, &index)
+            }
+        } catch {
+            throw ParsingError.argumentBuildingError(error: error)
         }
     }
 }

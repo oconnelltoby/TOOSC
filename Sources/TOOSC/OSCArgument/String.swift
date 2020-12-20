@@ -5,18 +5,30 @@
 import Foundation
 
 extension String: OSCArgument {
+    enum ParsingError: Error {
+        case missingNullTerminator
+        case invalidUTF8Encoding
+    }
+    
     public static let typeTag: Character = "s"
+    private static let nullTerminator = UInt8(0)
     
     public var oscData: Data {
         nullTerminatedBytes.bytePadded(multiple: 4)
     }
     
-    public init?(oscData: Data, index: inout Int) {
-        let oscData = oscData[index ..< oscData.endIndex]
-        let stringData = oscData.prefix { $0 != 0 }
+    public init(oscData: Data, index: inout Int) throws {
+        guard let nullTerminatorPosition = oscData[index ..< oscData.endIndex].firstIndex(of: Self.nullTerminator) else {
+            throw ParsingError.missingNullTerminator
+        }
         
-        self.init(data: stringData, encoding: .utf8)
-        let nullTerminatorSize = 1
-        index += (stringData.count + nullTerminatorSize).nextMultiple(of: 4)
+        let oscData = oscData[index ..< nullTerminatorPosition]
+        
+        guard let string = String(data: oscData, encoding: .utf8) else {
+            throw ParsingError.invalidUTF8Encoding
+        }
+        
+        self = string
+        index += (oscData.count + MemoryLayout.size(ofValue: Self.nullTerminator)).nextMultiple(of: 4)
     }
 }

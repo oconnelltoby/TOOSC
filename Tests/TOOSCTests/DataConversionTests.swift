@@ -70,7 +70,7 @@ extension DataConversionTests {
         line: UInt = #line
     ) where Type: OSCArgument & Equatable {
         var index = 0
-        XCTAssertEqual(oscDataConstructable, Type(oscData: data, index: &index), file: file, line: line)
+        XCTAssertEqual(oscDataConstructable, try? Type(oscData: data, index: &index), file: file, line: line)
         XCTAssertEqual(index, stride, file: file, line: line)
     }
 }

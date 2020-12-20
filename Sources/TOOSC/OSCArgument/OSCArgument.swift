@@ -6,6 +6,6 @@ import Foundation
 
 public protocol OSCArgument {
     static var typeTag: Character { get }
-    init?(oscData: Data, index: inout Int)
+    init(oscData: Data, index: inout Int) throws
     var oscData: Data { get }
 }

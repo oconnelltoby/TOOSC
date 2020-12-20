@@ -7,11 +7,11 @@ import Foundation
 protocol OSCContainer {
     static var indentifier: String { get }
     
-    init?(
+    init(
         oscData: Data,
         index: inout Int,
-        argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]
-    )
+        argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) throws -> OSCArgument]
+    ) throws
     
     var oscData: Data { get }
 }
