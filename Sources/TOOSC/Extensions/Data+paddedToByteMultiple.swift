@@ -9,6 +9,6 @@ import Foundation
 
 extension Data {
     func bytePadded(multiple: Int) -> Data {
-        return self + (count ..< count.nextMultiple(of: 4)).map { _ in UInt8(0) }
+        return self + (count ..< count.nextMultiple(of: multiple)).map { _ in UInt8(0) }
     }
 }
