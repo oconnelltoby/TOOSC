@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct OSCBundle {
+public struct OSCBundle: OSCContainer {
     public enum Content {
         case bundle(OSCBundle)
         case message(OSCMessage)
@@ -18,6 +18,8 @@ public struct OSCBundle {
             }
         }
     }
+    
+    static var indentifier: String = "#bundle"
     
     var timeTag: TimeTag
     var content: [Content]
@@ -40,7 +42,7 @@ public struct OSCBundle {
         index: inout Int,
         argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]
     ) {
-        guard String(oscData: oscData, index: &index) == "#bundle" else { return nil }
+        guard String(oscData: oscData, index: &index) == Self.indentifier else { return nil }
 
         guard let timeTag = TimeTag(oscData: oscData, index: &index) else { return nil }
         self.timeTag = timeTag
@@ -72,6 +74,6 @@ public struct OSCBundle {
         let length = Int32(contentData.count).bigEndian
         let lengthData = withUnsafeBytes(of: length) { Data($0) }
         
-        return "#bundle".oscData + timeTag.oscData + lengthData + contentData
+        return Self.indentifier.oscData + timeTag.oscData + lengthData + contentData
     }
 }
