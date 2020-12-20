@@ -1,8 +1,5 @@
 //
-//  File.swift
-//  
-//
-//  Created by Toby O'Connell on 12/12/2020.
+// Copyright © 2020 Toby O'Connell. https://github.com/oconnelltoby
 //
 
 import Foundation
@@ -18,9 +15,9 @@ public struct OSCBundle: Equatable {
         
         var oscData: Data {
             switch self {
-            case .bundle(let bundle):
+            case let .bundle(bundle):
                 return bundle.oscData
-            case .message(let message):
+            case let .message(message):
                 return message.oscData
             }
         }
@@ -47,7 +44,7 @@ public struct OSCBundle: Equatable {
         index: inout Int,
         argumentBuilders: [Character: (_ oscData: Data, _ index: inout Int) -> OSCArgument?]
     ) {
-        guard "#bundle" == String(oscData: oscData, index: &index) else { return nil }
+        guard String(oscData: oscData, index: &index) == "#bundle" else { return nil }
 
         guard let timeTag = TimeTag(oscData: oscData, index: &index) else { return nil }
         self.timeTag = timeTag

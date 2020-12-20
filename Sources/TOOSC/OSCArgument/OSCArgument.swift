@@ -1,3 +1,7 @@
+//
+// Copyright © 2020 Toby O'Connell. https://github.com/oconnelltoby
+//
+
 import Foundation
 
 public protocol OSCArgument {

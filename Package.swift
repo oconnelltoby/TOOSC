@@ -8,19 +8,22 @@ let package = Package(
         .macOS(.v10_14),
         .iOS(.v12),
         .watchOS(.v5),
-        .tvOS(.v12)
+        .tvOS(.v12),
     ],
     products: [
         .library(
             name: "TOOSC",
-            targets: ["TOOSC"]),
+            targets: ["TOOSC"]
+        ),
     ],
     targets: [
         .target(
             name: "TOOSC",
-            dependencies: []),
+            dependencies: []
+        ),
         .testTarget(
             name: "TOOSCTests",
-            dependencies: ["TOOSC"]),
+            dependencies: ["TOOSC"]
+        ),
     ]
 )

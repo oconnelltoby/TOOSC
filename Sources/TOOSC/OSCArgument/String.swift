@@ -1,8 +1,5 @@
 //
-//  File.swift
-//  
-//
-//  Created by Toby O'Connell on 09/12/2020.
+// Copyright © 2020 Toby O'Connell. https://github.com/oconnelltoby
 //
 
 import Foundation

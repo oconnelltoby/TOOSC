@@ -1,8 +1,5 @@
 //
-//  File.swift
-//  
-//
-//  Created by Toby O'Connell on 19/12/2020.
+// Copyright © 2020 Toby O'Connell. https://github.com/oconnelltoby
 //
 
 import XCTest
@@ -13,7 +10,6 @@ class OSCBundleTests: XCTestCase {
         let content = (0 ..< 1).flatMap { _ -> [OSCBundle.Content] in
             [.message(randomMessage()), .bundle(randomBundle())]
         }
-        
         
         let bundle = OSCBundle(timeTag: .immediate, content: content)
         
@@ -29,7 +25,7 @@ class OSCBundleTests: XCTestCase {
             Float32.random(in: Float32.leastNormalMagnitude ... Float32.greatestFiniteMagnitude),
             Int32.random(in: Int32.min ... Int32.max),
             Data(UUID().uuidString.utf8),
-            randomTimeTag()
+            randomTimeTag(),
         ]
     }
     

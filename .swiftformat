@@ -1,0 +1,10 @@
+# Format options
+
+--trimwhitespace nonblank-lines
+--importgrouping testable-bottom
+--wraparguments before-first
+--header "\nCopyright © 2020 Toby O'Connell. https://github.com/oconnelltoby\n"
+
+# Rules
+
+--disable numberFormatting
