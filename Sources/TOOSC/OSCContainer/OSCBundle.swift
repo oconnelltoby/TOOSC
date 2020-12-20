@@ -4,11 +4,7 @@
 
 import Foundation
 
-public struct OSCBundle: Equatable {
-    public static func == (lhs: OSCBundle, rhs: OSCBundle) -> Bool {
-        lhs.oscData == rhs.oscData
-    }
-    
+public struct OSCBundle {
     public enum Content {
         case bundle(OSCBundle)
         case message(OSCMessage)
