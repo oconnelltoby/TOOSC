@@ -16,8 +16,8 @@ public struct OSCMessage: OSCContainer {
     
     static var indentifier: String = "/"
     
-    var address: String
-    var arguments: [OSCArgument]
+    public var address: String
+    public var arguments: [OSCArgument]
     
     public init(address: String, arguments: [OSCArgument]) {
         self.address = address

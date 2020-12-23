@@ -30,8 +30,8 @@ public struct OSCBundle: OSCContainer {
     
     static var indentifier: String = "#bundle"
     
-    var timeTag: TimeTag
-    var content: [Content]
+    public var timeTag: TimeTag
+    public var content: [Content]
     
     public init(timeTag: TimeTag, content: [Content]) {
         self.content = content
