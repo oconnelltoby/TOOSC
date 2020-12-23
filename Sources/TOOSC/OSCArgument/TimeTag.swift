@@ -5,7 +5,7 @@
 import Foundation
 
 public struct TimeTag: OSCArgument {
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case dataTooShort
     }
     

@@ -5,7 +5,7 @@
 import Foundation
 
 extension Data: OSCArgument {
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case cannotParseSize(error: Error)
         case dataTooShort
     }

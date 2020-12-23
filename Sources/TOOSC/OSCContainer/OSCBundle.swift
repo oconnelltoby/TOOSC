@@ -5,8 +5,7 @@
 import Foundation
 
 public struct OSCBundle: OSCContainer {
-
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case cannotParseIdentifier(error: Error)
         case invalidIdentifier
         case timeTagError(error: Error)

@@ -5,7 +5,7 @@
 import Foundation
 
 extension String: OSCArgument {
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case missingNullTerminator
         case invalidUTF8Encoding
     }

@@ -5,7 +5,7 @@
 import Foundation
 
 extension Float32: OSCArgument {
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case dataTooShort
     }
     

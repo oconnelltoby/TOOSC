@@ -5,7 +5,7 @@
 import Foundation
 
 public struct OSCMessage: OSCContainer {
-    enum ParsingError: Error {
+    public enum ParsingError: Error {
         case invalidIdentifier
         case cannotParseTypeTags(error: Error)
         case invalidTypeTagIdentifier
