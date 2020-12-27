@@ -9,3 +9,10 @@ public protocol OSCArgument {
     init(oscData: Data, index: inout Int) throws
     var oscData: Data { get }
 }
+
+public extension OSCArgument {
+    init(oscData: Data) throws {
+        var index = 0
+        try self.init(oscData: oscData, index: &index)
+    }
+}
