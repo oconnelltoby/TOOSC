@@ -8,6 +8,8 @@ extension String: OSCArgument {
     public enum ParsingError: Error {
         case missingNullTerminator
         case invalidUTF8Encoding
+        case dataTooShort
+        case invalidLeadingNullTerminator
     }
     
     public static let typeTag: Character = "s"
@@ -20,6 +22,14 @@ extension String: OSCArgument {
     public init(oscData: Data, index: inout Int) throws {
         guard let nullTerminatorPosition = oscData[index ..< oscData.endIndex].firstIndex(of: Self.nullTerminator) else {
             throw ParsingError.missingNullTerminator
+        }
+        
+        if oscData.count < 4 {
+            throw ParsingError.dataTooShort
+        }
+        
+        if oscData.count > 4, oscData.first == Self.nullTerminator {
+            throw ParsingError.invalidLeadingNullTerminator
         }
         
         let oscData = oscData[index ..< nullTerminatorPosition]
