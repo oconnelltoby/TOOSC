@@ -25,7 +25,6 @@ class OSCBundleTests: XCTestCase {
             Float32.random(in: Float32.leastNormalMagnitude ... Float32.greatestFiniteMagnitude),
             Int32.random(in: Int32.min ... Int32.max),
             Data(UUID().uuidString.utf8),
-            randomTimeTag(),
         ]
     }
     

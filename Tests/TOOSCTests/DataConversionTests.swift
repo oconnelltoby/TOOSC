@@ -50,14 +50,26 @@ class DataConversionTests: XCTestCase {
         assertEqual(oscDataConstructable: Data([0, 1, 2, 3, 4]), data: Data([0, 0, 0, 5, 0, 1, 2, 3, 4, 0, 0, 0]), stride: 12)
     }
     
-    func testTimeTagConversion() {
+    func testTimeTagConversion() throws {
         XCTAssertEqual([0, 0, 0, 0, 0, 0, 0, 1], [UInt8](TimeTag.immediate.oscData))
         XCTAssertEqual([0, 0, 0, 0, 0, 244, 35, 240], [UInt8](TimeTag(seconds: 999999).oscData))
         XCTAssertEqual([255, 255, 255, 255, 255, 255, 255, 255], [UInt8](TimeTag(ntpSeconds: UInt64.max).oscData))
-
-        assertEqual(oscDataConstructable: TimeTag.immediate, data: Data([0, 0, 0, 0, 0, 0, 0, 1]), stride: 8)
-        assertEqual(oscDataConstructable: TimeTag(seconds: 999999), data: Data([0, 0, 0, 0, 0, 244, 35, 240]), stride: 8)
-        assertEqual(oscDataConstructable: TimeTag(ntpSeconds: UInt64.max), data: Data([255, 255, 255, 255, 255, 255, 255, 255]), stride: 8)
+        
+        do {
+            var index = 0
+            XCTAssertEqual(try TimeTag(oscData: Data([0, 0, 0, 0, 0, 0, 0, 1]), index: &index), TimeTag.immediate)
+            XCTAssertEqual(index, 8)
+        }
+        do {
+            var index = 0
+            XCTAssertEqual(try TimeTag(oscData: Data([0, 0, 0, 0, 0, 244, 35, 240]), index: &index), TimeTag(seconds: 999999))
+            XCTAssertEqual(index, 8)
+        }
+        do {
+            var index = 0
+            XCTAssertEqual(try TimeTag(oscData: Data([255, 255, 255, 255, 255, 255, 255, 255]), index: &index), TimeTag(ntpSeconds: UInt64.max))
+            XCTAssertEqual(index, 8)
+        }
     }
 }
 

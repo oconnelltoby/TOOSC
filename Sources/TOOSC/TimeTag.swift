@@ -4,13 +4,11 @@
 
 import Foundation
 
-public struct TimeTag: OSCArgument {
+public struct TimeTag {
     public enum ParsingError: Error {
         case dataTooShort
     }
-    
-    public static var typeTag: Character = "t"
-    
+        
     var ntpSeconds: UInt64
     
     public static let immediate = TimeTag(wholeSeconds: 0, fractionalSeconds: 1)
@@ -29,6 +27,11 @@ public struct TimeTag: OSCArgument {
         ntpSeconds = UInt64(wholeSeconds) << MemoryLayout<UInt32>.size + UInt64(fractionalSeconds)
     }
     
+    public init(oscData: Data) throws {
+        var index = 0
+        try self.init(oscData: oscData, index: &index)
+    }
+
     public init(oscData: Data, index: inout Int) throws {
         let size = MemoryLayout<UInt64>.size
         guard oscData.count >= size else {
