@@ -29,7 +29,7 @@ public struct OSCMessage: OSCContainer {
         var argumentData = Data()
 
         arguments.forEach { argument in
-            typeTags.append(type(of: argument).typeTag)
+            typeTags.append(argument.typeTag)
             argumentData.append(argument.oscData)
         }
 

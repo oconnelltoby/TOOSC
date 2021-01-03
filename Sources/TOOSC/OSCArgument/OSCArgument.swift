@@ -5,14 +5,10 @@
 import Foundation
 
 public protocol OSCArgument {
-    static var typeTag: Character { get }
-    init(oscData: Data, index: inout Int) throws
+    typealias TypeTag = Character
+    
+    var typeTag: TypeTag { get }
     var oscData: Data { get }
-}
-
-public extension OSCArgument {
-    init(oscData: Data) throws {
-        var index = 0
-        try self.init(oscData: oscData, index: &index)
-    }
+    
+    static var builders: [TypeTag: (_ oscData: Data, _ index: inout Int) throws -> OSCArgument] { get }
 }

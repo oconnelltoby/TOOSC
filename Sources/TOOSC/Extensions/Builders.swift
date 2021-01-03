@@ -11,7 +11,9 @@ public extension Array where Element == OSCArgument.Type {
 extension Dictionary where Key == Character, Value == (_ oscData: Data, _ index: inout Int) throws -> OSCArgument {
     init(types: [OSCArgument.Type]) {
         self = types.reduce(into: Self()) { dictionary, oscArgumentType in
-            dictionary[oscArgumentType.typeTag] = oscArgumentType.init
+            oscArgumentType.builders.forEach { typeTag, builder in
+                dictionary[typeTag] = builder
+            }
         }
     }
     

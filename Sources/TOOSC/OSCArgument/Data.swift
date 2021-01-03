@@ -11,14 +11,27 @@ extension Data: OSCArgument {
         case invalidNegativeSize
     }
     
-    public static let typeTag: Character = "b"
-    
     public var oscData: Data {
         let length = Int32(count).oscData
         return (length + self).bytePadded(multiple: 4)
     }
     
+    private static let typeTag: TypeTag = "b"
+    
+    public var typeTag: TypeTag { Self.typeTag }
+    
+    public static let builders: [TypeTag: (Data, inout Int) throws -> OSCArgument] = [typeTag: build]
+    
+    public init(oscData: Data) throws {
+        var index = 0
+        self = try Self.build(oscData: oscData, index: &index)
+    }
+    
     public init(oscData: Data, index: inout Int) throws {
+        self = try Self.build(oscData: oscData, index: &index)
+    }
+    
+    private static func build(oscData: Data, index: inout Int) throws -> Data {
         let size: Int32
         do {
             try size = Int32(oscData: oscData, index: &index)
@@ -34,7 +47,8 @@ extension Data: OSCArgument {
             throw ParsingError.dataTooShort
         }
         
-        self = oscData[index ..< index + Int(size)]
+        let data = oscData[index ..< index + Int(size)]
         index += Int(size).nextMultiple(of: 4)
+        return data
     }
 }

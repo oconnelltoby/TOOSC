@@ -12,14 +12,28 @@ extension String: OSCArgument {
         case invalidLeadingNullTerminator
     }
     
-    public static let typeTag: Character = "s"
     private static let nullTerminator = UInt8(0)
     
     public var oscData: Data {
         nullTerminatedBytes.bytePadded(multiple: 4)
     }
     
+    private static let typeTag: TypeTag = "s"
+    
+    public var typeTag: TypeTag { Self.typeTag }
+    
+    public static let builders: [TypeTag: (Data, inout Int) throws -> OSCArgument] = [typeTag: build]
+    
+    public init(oscData: Data) throws {
+        var index = 0
+        self = try Self.build(oscData: oscData, index: &index)
+    }
+    
     public init(oscData: Data, index: inout Int) throws {
+        self = try Self.build(oscData: oscData, index: &index)
+    }
+    
+    static func build(oscData: Data, index: inout Int) throws -> String {
         guard let nullTerminatorPosition = oscData[index ..< oscData.endIndex].firstIndex(of: Self.nullTerminator) else {
             throw ParsingError.missingNullTerminator
         }
@@ -38,7 +52,7 @@ extension String: OSCArgument {
             throw ParsingError.invalidUTF8Encoding
         }
         
-        self = string
         index += (oscData.count + MemoryLayout.size(ofValue: Self.nullTerminator)).nextMultiple(of: 4)
+        return string
     }
 }
